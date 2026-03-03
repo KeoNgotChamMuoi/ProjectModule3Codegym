@@ -27,6 +27,7 @@ public class InputManager : MonoBehaviour
     {
         ReadKeyboard();
         ReadMouse();
+
     }
 
     void ReadKeyboard()
@@ -42,6 +43,7 @@ public class InputManager : MonoBehaviour
         MoveInput = new Vector2(x, y).normalized;
 
         JumpPressed = Input.GetKeyDown(KeyCode.Space);
+
     }
 
     void ReadMouse()
@@ -53,5 +55,6 @@ public class InputManager : MonoBehaviour
 
         MouseLeft = Input.GetMouseButton(0);
         MouseRight = Input.GetMouseButton(1);
+
     }
 }

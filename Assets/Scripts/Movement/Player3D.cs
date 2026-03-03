@@ -1,5 +1,4 @@
 using Game.Interfaces;
-using System.Collections;
 using UnityEngine;
 
 public class Player3D : BaseEntity
@@ -8,12 +7,12 @@ public class Player3D : BaseEntity
     public IMovementStrategy moveStrategy;
     public Camera mainCamera;
 
-    [Header("Animation")]
+    //[Header("Animation")]
     [SerializeField] private Animator animator;
 
-    [Header("Respawn")]
-    [SerializeField] private Transform respawnPoint;
-    [SerializeField] private float respawnDelay = 3f;
+    //[Header("Respawn")]
+    //[SerializeField] private Transform respawnPoint;
+    //[SerializeField] private float respawnDelay = 3f;
 
 
     InputManager input;
@@ -22,18 +21,19 @@ public class Player3D : BaseEntity
 
     public void HandleInput()
     {
-        Vector3 moveDirection = new Vector3(input.MoveInput.x, 0, input.MoveInput.y);
-        moveDirection = mainCamera.transform.TransformDirection(moveDirection);
-        moveDirection.y = 0; // Keep movement horizontal
-        moveStrategy.Move(transform, moveDirection, moveSpeed);
-        if (input.JumpPressed)
+        if (InputManager.Instance == null) return;
+        Vector2 move = InputManager.Instance.MoveInput;
+        Vector3 moveDirection = new Vector3(move.x, 0f, move.y);
+        transform.Translate(moveDirection * moveSpeed * Time.deltaTime); // Example movement speed
+        if (InputManager.Instance.JumpPressed)
         {
             Rigidbody rb = GetComponent<Rigidbody>();
             if (rb != null)
             {
-                moveStrategy.Jump(rb, 5f); // Example jump force
+                rb.AddForce(Vector3.up * 5f, ForceMode.Impulse); // Example jump force
             }
         }
+
     }
     public void CheckInteract()
     {
@@ -56,6 +56,8 @@ public class Player3D : BaseEntity
         {
             animator.SetTrigger("Die");
         }
+        if (InputManager.Instance != null)
+            InputManager.Instance.enabled = false;
         // Disable player controls here
     }
 
@@ -72,25 +74,29 @@ public class Player3D : BaseEntity
         HandleInput();
     }
 
+    public void Move()
+    {
+
+    }
     public void OnDeathAnimationEnd()
     {
         Debug.Log("Player death animation ended. Game Over logic can be triggered here.");
         Destroy(gameObject); // Example: Destroy player object after death animation
     }
-    IEnumerator RespawnCoroutine()
-    {
-        yield return new WaitForSeconds(respawnDelay); // Wait for 3 seconds before respawning
-        Respawm();
-    }
+    //IEnumerator RespawnCoroutine()
+    //{
+    //    yield return new WaitForSeconds(respawnDelay); // Wait for 3 seconds before respawning
+    //    Respawm();
+    //}
 
-    void Respawm()
-    {
-        Debug.Log("Player respawned.");
-        isDead = false;
-        deathStarted = false;
-        // Reset player position, health, and other necessary states here
-        transform.position = Vector3.zero; // Example: Respawn at origin
-        health = 100; // Reset health
-                      // Re-enable player controls here
-    }
+    //void Respawm()
+    //{
+    //    Debug.Log("Player respawned.");
+    //    isDead = false;
+    //    deathStarted = false;
+    //    // Reset player position, health, and other necessary states here
+    //    transform.position = Vector3.zero; // Example: Respawn at origin
+    //    health = 100; // Reset health
+    //                  // Re-enable player controls here
+    //}
 }
