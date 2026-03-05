@@ -1,20 +1,25 @@
 using UnityEngine;
-namespace Game.Core 
+namespace Game.Core
 {
-    public abstract class BaseEntity : MonoBehaviour 
+    public abstract class BaseEntity : MonoBehaviour
     {
         [Header("Base Stats")]
-        protected int health = 100;           
-        protected float moveSpeed = 5f;       
-        protected bool isDead = false;        
+        [SerializeField] protected int health = 100;
+        [SerializeField] protected float moveSpeed = 5f;
+        [SerializeField] protected bool isDead = false;
 
-        public virtual void TakeDamage(int amount) 
+        public virtual void TakeDamage(int amount)
         {
             if (isDead) return;
             health -= amount;
             if (health <= 0) Die();
         }
 
-        public abstract void Die(); 
+        public virtual void Die()
+        {
+            isDead = true;
+            // Add death logic here (e.g., play animation, disable entity)
+            Debug.Log($"{gameObject.name} has died.");
+        }
     }
 }

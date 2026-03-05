@@ -41,9 +41,7 @@ public class InputManager : MonoBehaviour
         if (Input.GetKey(KeyCode.W)) y += 1f;
 
         MoveInput = new Vector2(x, y).normalized;
-
         JumpPressed = Input.GetKeyDown(KeyCode.Space);
-
     }
 
     void ReadMouse()
