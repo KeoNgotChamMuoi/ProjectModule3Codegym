@@ -5,7 +5,6 @@ namespace Game.Interfaces
     public interface IMovementStrategy
     {
         void Move(Transform transform, Vector3 direction, float speed);
-        // Giữ lại Collider để sau này xử lý check Grounded hoặc va chạm khi nhảy
         void Jump(Rigidbody rb, Collider col, float jumpForce);
     }
 
@@ -20,7 +19,6 @@ namespace Game.Interfaces
         {
             if (rb != null)
             {
-                // Bạn có thể dùng 'col' ở đây để check va chạm trước khi cho phép nhảy
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             }
         }
