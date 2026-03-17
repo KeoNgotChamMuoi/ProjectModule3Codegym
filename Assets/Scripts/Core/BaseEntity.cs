@@ -5,7 +5,6 @@ namespace Game.Core
     {
         [Header("Base Stats")]
         [SerializeField] protected int health = 100;
-        [SerializeField] protected float moveSpeed = 5f;
         [SerializeField] protected bool isDead = false;
 
         public virtual void TakeDamage(int amount)
