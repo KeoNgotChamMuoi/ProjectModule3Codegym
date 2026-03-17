@@ -1,17 +1,20 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
     public static InputManager Instance;
 
-    // Movement
+    // ===== MOVEMENT =====
     public Vector2 MoveInput { get; private set; }
     public bool JumpPressed { get; private set; }
 
-    // Mouse
+    // ===== MOUSE =====
     public Vector2 MouseDelta { get; private set; }
+
     public bool MouseLeft { get; private set; }
+    public bool MouseLeftDown { get; private set; }
     public bool MouseRight { get; private set; }
+    public bool MouseRightDown { get; private set; }
 
     void Awake()
     {
@@ -41,6 +44,8 @@ public class InputManager : MonoBehaviour
         if (Input.GetKey(KeyCode.W)) y += 1f;
 
         MoveInput = new Vector2(x, y).normalized;
+
+        // CHỈ TRUE 1 FRAME
         JumpPressed = Input.GetKeyDown(KeyCode.Space);
     }
 
@@ -51,8 +56,13 @@ public class InputManager : MonoBehaviour
             Input.GetAxis("Mouse Y")
         );
 
+        //Hold
         MouseLeft = Input.GetMouseButton(0);
         MouseRight = Input.GetMouseButton(1);
+
+        //Click 1 frame
+        MouseLeftDown = Input.GetMouseButtonDown(0);
+        MouseRightDown = Input.GetMouseButtonDown(1);
 
     }
 }
