@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Gamekit3D
 {
-    //use this class to simply scan & spot the player based on the parameters.
+    //use this class to simply scan & spot the playerState based on the parameters.
     //Used by enemies behaviours.
     [System.Serializable]
     public class TargetScanner
@@ -17,14 +17,14 @@ namespace Gamekit3D
         public LayerMask viewBlockerLayerMask;
 
         /// <summary>
-        /// Check if the player is visible according to that Scanner parameter.
+        /// Check if the playerState is visible according to that Scanner parameter.
         /// </summary>
         /// <param name="detector">The transform from which run the detection</param>
         /// /// <param name="useHeightDifference">If the computation should comapre the height difference to the maxHeightDifference value or ignore</param>
-        /// <returns>The player controller if visible, null otherwise</returns>
+        /// <returns>The playerState controller if visible, null otherwise</returns>
         public PlayerController Detect(Transform detector, bool useHeightDifference = true)
         {
-            //if either the player is not spwned or they are spawning, we do not target them
+            //if either the playerState is not spwned or they are spawning, we do not target them
             if (PlayerController.instance == null || PlayerController.instance.respawning)
                 return null;
 

@@ -58,7 +58,7 @@ namespace Gamekit3D
         public RandomAudioPlayer punchAudioPlayer;
 
         protected PlayerController m_Target;
-        //used to store the position of the target when the Grenadier decide to shoot, so if the player
+        //used to store the position of the target when the Grenadier decide to shoot, so if the playerState
         //move between the start of the animation and the actual grenade launch, it shoot were it was not where it is now
         protected Vector3 m_GrenadeTarget;
         protected Material m_CoreMaterial;
@@ -173,7 +173,7 @@ namespace Gamekit3D
 
             Vector3 toTarget = m_GrenadeTarget - transform.position;
 
-            //the grenade is launched a couple of meters in "front" of the player, because it bounce and roll, to make it a bit ahrder for the player
+            //the grenade is launched a couple of meters in "front" of the playerState, because it bounce and roll, to make it a bit ahrder for the playerState
             //to avoid it
             Vector3 target = transform.position + (toTarget - toTarget * 0.3f);
 
@@ -191,7 +191,7 @@ namespace Gamekit3D
             if (Mathf.Abs(angle) < 20.0f)
             { //for a very small angle, we directly rotate the model
                 transform.forward = v.normalized;
-                // if the player was above the player we return false to tell the Idle state 
+                // if the playerState was above the playerState we return false to tell the Idle state 
                 // that we want a "shield up" attack as our punch attack wouldn't reach it.
                 return above ? OrientationState.ORIENTED_ABOVE : OrientationState.ORIENTED_FACE; 
             }

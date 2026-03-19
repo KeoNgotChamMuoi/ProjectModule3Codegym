@@ -19,7 +19,7 @@ namespace Gamekit3D
         }
 
 
-        [Tooltip("This is the gameobject that will transition.  For example, the player.")]
+        [Tooltip("This is the gameobject that will transition.  For example, the playerState.")]
         public GameObject transitioningGameObject;
         [Tooltip("Whether the transition will be within this scene, to a different zone or a non-gameplay scene.")]
         public TransitionType transitionType;

@@ -5,7 +5,7 @@ public enum WeaponType
     Melee,
     Ranged
 }
-public class Weapon : MonoBehaviour
+public class Weapon : Item
 {
     public WeaponType weaponType;
     public float damage;

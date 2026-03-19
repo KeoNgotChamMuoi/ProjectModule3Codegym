@@ -12,7 +12,7 @@ namespace Gamekit3D
 
 
         public DestinationTag destinationTag;    // This matches the tag chosen on the TransitionPoint that this is the destination for.
-        [Tooltip("This is the gameobject that has transitioned.  For example, the player.")]
+        [Tooltip("This is the gameobject that has transitioned.  For example, the playerState.")]
         public GameObject transitioningGameObject;
         public UnityEvent OnReachDestination;
     }

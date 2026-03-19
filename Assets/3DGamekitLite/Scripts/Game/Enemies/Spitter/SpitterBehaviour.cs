@@ -163,7 +163,7 @@ namespace Gamekit3D
 
             if (m_Fleeing || fromTarget.sqrMagnitude <= fleeingDistance * fleeingDistance)
             {
-                //player is too close from us, pick a point diametrically oppossite at twice that distance and try to move there.
+                //playerState is too close from us, pick a point diametrically oppossite at twice that distance and try to move there.
                 Vector3 fleePoint = transform.position + fromTarget.normalized * 2 * fleeingDistance;
 
                 Debug.DrawLine(fleePoint, fleePoint + Vector3.up * 10.0f);
@@ -182,7 +182,7 @@ namespace Gamekit3D
 
             if (m_Fleeing && fromTarget.sqrMagnitude > fleeingDistance * fleeingDistance * 4)
             {
-                //we're twice the fleeing distance from the player and fleeing, we can stop now
+                //we're twice the fleeing distance from the playerState and fleeing, we can stop now
                 m_Fleeing = false;
                 controller.animator.SetBool(hashFleeing, m_Fleeing);
             }
@@ -220,7 +220,7 @@ namespace Gamekit3D
             if (m_Target.playerScanner.detectionRadius < m_Target.fleeingDistance)
             {
                 EditorGUILayout.HelpBox("The scanner detection radius is smaller than the fleeing range.\n" +
-                    "The spitter will never shoot at the player as it will flee past the range at which it can see the player",
+                    "The spitter will never shoot at the playerState as it will flee past the range at which it can see the playerState",
                     MessageType.Warning, true);    
             }
             

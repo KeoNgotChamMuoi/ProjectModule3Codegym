@@ -315,7 +315,7 @@ namespace Gamekit3D
         // Called each physics step to set the rotation Ellen is aiming to have.
         void SetTargetRotation()
         {
-            // Create three variables, move input local to the player, flattened forward direction of the camera and a local target rotation.
+            // Create three variables, move input local to the playerState, flattened forward direction of the camera and a local target rotation.
             Vector2 moveInput = m_Input.MoveInput;
             Vector3 localMovementDirection = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
             
@@ -356,12 +356,12 @@ namespace Gamekit3D
 
                 for (int i = 0; i < count; ++i)
                 {
-                    // ... and for each get a vector from the player to the enemy.
+                    // ... and for each get a vector from the playerState to the enemy.
                     Vector3 playerToEnemy = m_OverlapResult[i].transform.position - transform.position;
                     playerToEnemy.y = 0;
                     playerToEnemy.Normalize();
 
-                    // Find the dot product between the direction the player wants to go and the direction to the enemy.
+                    // Find the dot product between the direction the playerState wants to go and the direction to the enemy.
                     // This will be larger the closer to Ellen's desired direction the direction to the enemy is.
                     float d = Vector3.Dot(resultingForward, playerToEnemy);
 
@@ -385,7 +385,7 @@ namespace Gamekit3D
                 }
             }
 
-            // Find the difference between the current rotation of the player and the desired rotation of the player in radians.
+            // Find the difference between the current rotation of the playerState and the desired rotation of the playerState in radians.
             float angleCurrent = Mathf.Atan2(transform.forward.x, transform.forward.z) * Mathf.Rad2Deg;
             float targetAngle = Mathf.Atan2(resultingForward.x, resultingForward.z) * Mathf.Rad2Deg;
 
@@ -393,7 +393,7 @@ namespace Gamekit3D
             m_TargetRotation = targetRotation;
         }
 
-        // Called each physics step to help determine whether Ellen can turn under player input.
+        // Called each physics step to help determine whether Ellen can turn under playerState input.
         bool IsOrientationUpdated()
         {
             bool updateOrientationForLocomotion = !m_IsAnimatorTransitioning && m_CurrentStateInfo.shortNameHash == m_HashLocomotion || m_NextStateInfo.shortNameHash == m_HashLocomotion;
@@ -416,7 +416,7 @@ namespace Gamekit3D
             transform.rotation = m_TargetRotation;
         }
 
-        // Called each physics step to check if audio should be played and if so instruct the relevant random audio player to do so.
+        // Called each physics step to check if audio should be played and if so instruct the relevant random audio playerState to do so.
         void PlayAudio()
         {
             float footfallCurve = m_Animator.GetFloat(m_HashFootFall);

@@ -30,7 +30,7 @@ namespace Gamekit3D
 
         public MeleeWeapon meleeWeapon;
         public TargetScanner playerScanner;
-        [Tooltip("Time in seconde before the Chomper stop pursuing the player when the player is out of sight")]
+        [Tooltip("Time in seconde before the Chomper stop pursuing the playerState when the playerState is out of sight")]
         public float timeToStopPursuit;
 
         [Header("Audio")]
@@ -111,7 +111,7 @@ namespace Gamekit3D
 
             if (m_Target == null)
             {
-                //we just saw the player for the first time, pick an empty spot to target around them
+                //we just saw the playerState for the first time, pick an empty spot to target around them
                 if (target != null)
                 {
                     m_Controller.animator.SetTrigger(hashSpotted);
@@ -123,8 +123,8 @@ namespace Gamekit3D
             }
             else
             {
-                //we lost the target. But chomper have a special behaviour : they only loose the player scent if they move past their detection range
-                //and they didn't see the player for a given time. Not if they move out of their detectionAngle. So we check that this is the case before removing the target
+                //we lost the target. But chomper have a special behaviour : they only loose the playerState scent if they move past their detection range
+                //and they didn't see the playerState for a given time. Not if they move out of their detectionAngle. So we check that this is the case before removing the target
                 if (target == null)
                 {
                     m_TimerSinceLostTarget += Time.deltaTime;

@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class Player3D : BaseEntity
 {
-    public Player3D Instance { get; private set; }
+    public static Player3D Instance { get; private set; }
+    public float moveSpeed = 5f;
+    public float jumpForce = 5f;
+    [Header("Rotation")]
+    public float rotationSpeed = 10f;
+
     [Header("Movement Strategy")]
     public IMovementStrategy moveStrategy;
 
@@ -26,7 +31,7 @@ public class Player3D : BaseEntity
     public override void TakeDamage(int amount)
     {
         base.TakeDamage(amount);
-        // Additional player-specific damage logic (e.g., update UI, play sound)
+        // Additional playerState-specific damage logic (e.g., update UI, play sound)
     }
     public override void Die()
     {
@@ -35,14 +40,14 @@ public class Player3D : BaseEntity
         isDead = true;
         moveStrategy = null; // Disable movement
 
-        // Additional player-specific death logic (e.g., play animation, disable controls)
+        // Additional playerState-specific death logic (e.g., play animation, disable controls)
         if (animator != null)
         {
             animator.SetTrigger("Die");
         }
         if (InputManager.Instance != null)
             InputManager.Instance.enabled = false;
-        // Disable player controls here
+        // Disable playerState controls here
     }
 
     // Start is called before the first frame update
@@ -64,7 +69,7 @@ public class Player3D : BaseEntity
     public void OnDeathAnimationEnd()
     {
         Debug.Log("Player death animation ended. Game Over logic can be triggered here.");
-        Destroy(gameObject); // Example: Destroy player object after death animation
+        Destroy(gameObject); // Example: Destroy playerState object after death animation
     }
     //IEnumerator RespawnCoroutine()
     //{
@@ -77,9 +82,9 @@ public class Player3D : BaseEntity
     //    Debug.Log("Player respawned.");
     //    isDead = false;
     //    deathStarted = false;
-    //    // Reset player position, health, and other necessary states here
+    //    // Reset playerState position, health, and other necessary states here
     //    transform.position = Vector3.zero; // Example: Respawn at origin
     //    health = 100; // Reset health
-    //                  // Re-enable player controls here
+    //                  // Re-enable playerState controls here
     //}
 }

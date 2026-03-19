@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Gamekit3D
 {
     /// <summary>
-    /// This class is used to put the player character into a specific state, usually upon entering a scene.
+    /// This class is used to put the playerState character into a specific state, usually upon entering a scene.
     /// </summary>
     public class CharacterStateSetter : MonoBehaviour
     {

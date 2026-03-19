@@ -1,15 +1,13 @@
-using System;
+using Game.Core;
 using UnityEngine;
 
 public class HealthSystem : MonoBehaviour
 {
     public float maxHealth = 100f;
+    public GameObject GameObject;
     public float currentHealth { get; private set; }
-    public bool destroyOnDeath = true;
-    public bool isDead = false;
-    public event Action<float> OnDamage;
-    public event Action OnDeath;
-    void Start()
+    public bool isDead;
+    void Awake()
     {
         currentHealth = maxHealth;
     }
@@ -17,7 +15,7 @@ public class HealthSystem : MonoBehaviour
     {
         if (isDead) return;
         currentHealth -= amount;
-        OnDamage?.Invoke(currentHealth);
+        Debug.Log(gameObject.name + " - " + amount);
         if (currentHealth <= 0)
         {
             Die();
@@ -27,7 +25,10 @@ public class HealthSystem : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
-        OnDamage?.Invoke(0);
+        Player3D player = GetComponent<Player3D>();
+        if (player != null) { player.Die(); return; }
+        EnemyBase enemy = GetComponent<EnemyBase>();
+        if (enemy != null) { enemy.Die(); return; }
     }
     public void Heal(float amount)
     {
@@ -37,13 +38,13 @@ public class HealthSystem : MonoBehaviour
         {
             currentHealth = maxHealth;
         }
-        OnDamage?.Invoke(currentHealth);
+
     }
     public void ResetHealth()
     {
         currentHealth = maxHealth;
         isDead = false;
-        OnDamage?.Invoke(currentHealth);
+
     }
     public float GetHealthPercentage()
     {

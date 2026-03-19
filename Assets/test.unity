@@ -132,7 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 414610674}
   - component: {fileID: 414610675}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: cameraPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 714049961}
   - component: {fileID: 714049960}
   - component: {fileID: 714049959}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Ground_Main
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 757371166}
   - component: {fileID: 757371174}
   - component: {fileID: 757371175}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -542,7 +542,7 @@ GameObject:
   - component: {fileID: 1003828056}
   - component: {fileID: 1003828054}
   - component: {fileID: 1003828055}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
