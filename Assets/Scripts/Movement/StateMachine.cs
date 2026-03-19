@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class StateMachine : MonoBehaviour
 {
     protected State currentState;
@@ -9,6 +8,7 @@ public class StateMachine : MonoBehaviour
         {
             currentState.Exit();
         }
+        currentState = newState;
         if (currentState != null)
             currentState.Enter();
     }
@@ -16,5 +16,10 @@ public class StateMachine : MonoBehaviour
     {
         if (currentState != null)
             currentState.Update();
+    }
+    void FixedUpdate()
+    {
+        if (currentState != null)
+            currentState.FixedUpdate();
     }
 }

@@ -3,7 +3,7 @@
 public class CameraFollow : MonoBehaviour
 {
     public Transform target;          // Player
-    public Transform cameraPivot;     // Pivot (child của player)
+    public Transform cameraPivot;     // Pivot (child của playerState)
     public Transform cam;             // Main Camera
 
     [Header("Distance")]
@@ -33,7 +33,7 @@ public class CameraFollow : MonoBehaviour
     // ================= FOLLOW PLAYER =================
     void HandlePosition()
     {
-        // DÍNH CHẶT player (không delay)
+        // DÍNH CHẶT playerState (không delay)
         cameraPivot.position = target.position;
     }
 

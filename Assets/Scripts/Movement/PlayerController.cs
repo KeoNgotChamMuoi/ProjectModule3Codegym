@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
 
     float xRotation = 0f;
+    public bool IsGrounded => isGrounded;
+    public Rigidbody RB => rb;
 
     void Awake()
     {
