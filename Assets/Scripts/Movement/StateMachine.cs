@@ -1,25 +1,35 @@
-using UnityEngine;
-public class StateMachine : MonoBehaviour
+﻿using UnityEngine;
+public abstract class StateMachine : MonoBehaviour
 {
-    protected State currentState;
+    public static StateMachine Instance { get; private set; }
+    public State CurrentState { get; set; }
+
+    // Hàm khởi tạo trạng thái ban đầu
+    public void Initialize(State startingState)
+    {
+        CurrentState = startingState;
+        CurrentState.Enter();
+    }
     public void ChangeState(State newState)
     {
-        if (currentState != null)
+        if (CurrentState != null)
         {
-            currentState.Exit();
+            CurrentState.Exit();
         }
-        currentState = newState;
-        if (currentState != null)
-            currentState.Enter();
+        CurrentState = newState;
+        if (CurrentState != null)
+            CurrentState.Enter();
     }
-    void Update()
+    protected virtual void Update()
     {
-        if (currentState != null)
-            currentState.Update();
+        if (CurrentState != null)
+        {
+            CurrentState.HandleInput();
+            CurrentState.Update();
+        }
     }
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
-        if (currentState != null)
-            currentState.FixedUpdate();
+        CurrentState?.FixedUpdate();
     }
 }

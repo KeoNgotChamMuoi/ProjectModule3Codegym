@@ -24,6 +24,13 @@ public class Player3D : BaseEntity
     InputManager input;
     private bool deathStarted = false;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        Instance = this;
+        input = InputManager.Instance;
+    }
+
     public void CheckInteract()
     {
         // Interaction logic here (e.g., raycast for objects)

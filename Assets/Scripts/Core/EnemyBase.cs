@@ -1,14 +1,62 @@
-using Game.Interfaces;
 using UnityEngine;
 
 namespace Game.Core
 {
-    public abstract class EnemyBase : BaseEntity
+
+    [RequireComponent(typeof(Rigidbody), typeof(Animator), typeof(EnemyStateMachine))]
+    public class EnemyBase : BaseEntity
     {
-        [Header("Enemy Combat Settings")]
-        protected int damageOutput = 10;        // Sát thương gây ra cho Player
-        protected IMovementStrategy moveStrategy; // Chiến thuật di chuyển của quái
-        protected Transform targetPlayer;       // Mục tiêu để đuổi theo
+        [Header("Enemy Components")]
+        public EnemyStateMachine stateMachine;
+        private EnemyController enemyController;
+        public Animator animator;
+        public Rigidbody rb;
+
+
+        [Header("Combat Stats")]
+        public int damageOutput = 10;
+        public float attackRange = 1.5f;
+        public float attackCooldown = 1f;
+        public int maxHealth = 100;
+        protected int currentHealth;
+
+        [Header("Movement Stats")]
+        public float MoveSpeed = 2f;   // Tốc độ di chuyển khi đang patrol
+        public float ChaseSpeed = 3f; // Tốc độ khi đang chase player
+        public float rotationSpeed = 5f; // Tốc độ xoay khi theo dõi player
+
+
+        [Header("Detection")]
+        public Transform dectectionPoint; // Điểm xuất phát của raycast để phát hiện player
+        public float detectionRange = 5f; // Khoảng cách phát hiện player 
+        public float viewAngle = 60f; // Góc nhìn của enemy để phát hiện player 
+        public LayerMask detectionMask;   // LayerMask để xác định những gì enemy có thể phát hiện (ví dụ: player, tường)
+
+
+        [Header("Patrol Settings")]
+        public Transform[] patrolPoints;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            enemyController = GetComponent<EnemyController>();
+            rb = GetComponent<Rigidbody>();
+            animator = GetComponent<Animator>();
+            currentHealth = maxHealth;
+
+            // Khóa xoay vật lý để tránh quái bị ngã
+            if (rb != null)
+                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        }
+        protected virtual void Start()
+        {
+            if (stateMachine != null)
+            {
+                // Khởi tạo state machine với trạng thái ban đầu là idle
+                StateMachine.Instance.Initialize(stateMachine.idleState);
+            }
+        }
+
 
         protected virtual void OnCollisionEnter(Collision col)
         {
@@ -19,13 +67,25 @@ namespace Game.Core
                 {
                     player.TakeDamage(damageOutput);
                 }
+                Debug.Log($"{gameObject.name} attacked {col.gameObject.name} for {damageOutput} damage.");
             }
+
         }
-        public abstract void UpdateAI();
+
         public override void TakeDamage(int amount)
         {
             base.TakeDamage(amount);
-            // Có thể thêm hiệu ứng phản hồi khi bị tấn công (ví dụ: nhấp nháy, âm thanh)
         }
+
+        public override void Die()
+        {
+            base.Die();
+            // Chuyển sang trạng thái chết trong state machine
+            if (enemyController != null && enemyController.enemyStateMachine != null)
+            {
+                enemyController.enemyStateMachine.ChangeState(enemyController.enemyStateMachine.deadState);
+            }
+        }
+
     }
 }
