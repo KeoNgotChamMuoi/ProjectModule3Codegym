@@ -1,6 +1,7 @@
 ﻿using Game.Core;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class HealthSystem : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class HealthSystem : MonoBehaviour
     public float currentHealth { get; private set; }
     public bool isDead;
 
-    public event Action<float> OnHealthChanged;
+    public UnityEvent<float> OnHealthChanged;
     public event Action OnDeath;
 
     void Awake()
@@ -37,7 +38,7 @@ public class HealthSystem : MonoBehaviour
         {
             entity.Die();
         }
-
+        GetComponent<BaseEntity>()?.Die();
     }
     public void Heal(float amount)
     {

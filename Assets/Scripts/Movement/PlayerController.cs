@@ -24,11 +24,14 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -48,7 +51,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // ================= CAMERA LOOK =================
-    void HandleMouseLook()
+    private void HandleMouseLook()
     {
         Vector2 mouse = InputManager.Instance.MouseDelta;
 
@@ -69,35 +72,41 @@ public class PlayerController : MonoBehaviour
     }
 
     // ================= MOVEMENT TPS =================
-    void HandleMovement()
+    private void HandleMovement()
     {
         Vector2 input = InputManager.Instance.MoveInput;
+        if (input.magnitude < 0.1f)
+        {
+            StopMovement();
+            return;
+        }
 
-        // Hướng theo camera (TPS)
+        // 1. Tính toán hướng di chuyển dựa trên Camera Pivot
         Vector3 camForward = cameraPivot.forward;
         Vector3 camRight = cameraPivot.right;
 
-        camForward.y = 0;
+        camForward.y = 0; // Triệt tiêu Y để không đi xuyên đất
         camRight.y = 0;
-
         camForward.Normalize();
         camRight.Normalize();
 
-        // ===== MOVE =====
-        Vector3 moveDir = camForward * input.y + camRight * input.x;
+        Vector3 moveDir = (camForward * input.y + camRight * input.x).normalized;
 
-        // KHÔNG XOAY PLAYER Ở ĐÂY
+        // 2. Di chuyển Rigidbody (Giữ nguyên vận tốc Y cho trọng lực)
+        rb.velocity = new Vector3(moveDir.x * speed, rb.velocity.y, moveDir.z * speed);
 
-        Vector3 velocity = rb.velocity;
+        // 3. Xoay nhân vật mượt mà về hướng di chuyển
+        Quaternion targetRotation = Quaternion.LookRotation(moveDir);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+    }
 
-        velocity.x = moveDir.x * speed;
-        velocity.z = moveDir.z * speed;
-
-        rb.velocity = velocity;
+    private void StopMovement()
+    {
+        rb.velocity = new Vector3(0, rb.velocity.y, 0);
     }
 
     // ================= JUMP =================
-    void HandleJump()
+    private void HandleJump()
     {
         if (InputManager.Instance.JumpPressed && isGrounded)
         {
@@ -105,16 +114,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ================= GROUND =================
-    void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-            isGrounded = true;
-    }
 
-    void OnCollisionExit(Collision collision)
+
+    // ================= GROUND =================
+    private void OnCollisionStay(Collision col) => CheckGround(col, true);
+    private void OnCollisionExit(Collision col) => CheckGround(col, false);
+
+    private void CheckGround(Collision col, bool state)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-            isGrounded = false;
+        if (col.gameObject.CompareTag("Ground")) isGrounded = state;
     }
 }

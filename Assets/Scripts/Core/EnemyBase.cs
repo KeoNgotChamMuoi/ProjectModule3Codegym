@@ -6,11 +6,11 @@ namespace Game.Core
     [RequireComponent(typeof(Rigidbody), typeof(Animator), typeof(EnemyStateMachine))]
     public class EnemyBase : BaseEntity
     {
+        [Header("References")]
+
         [Header("Enemy Components")]
-        public EnemyStateMachine stateMachine;
-        private EnemyController enemyController;
-        public Animator animator;
-        public Rigidbody rb;
+        [HideInInspector] public Animator animator;
+        [HideInInspector] public Rigidbody rb;
 
 
         [Header("Combat Stats")]
@@ -39,7 +39,6 @@ namespace Game.Core
         protected override void Awake()
         {
             base.Awake();
-            enemyController = GetComponent<EnemyController>();
             rb = GetComponent<Rigidbody>();
             animator = GetComponent<Animator>();
             currentHealth = maxHealth;
@@ -48,15 +47,6 @@ namespace Game.Core
             if (rb != null)
                 rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         }
-        protected virtual void Start()
-        {
-            if (stateMachine != null)
-            {
-                // Khởi tạo state machine với trạng thái ban đầu là idle
-                StateMachine.Instance.Initialize(stateMachine.idleState);
-            }
-        }
-
 
         protected virtual void OnCollisionEnter(Collision col)
         {
@@ -80,11 +70,7 @@ namespace Game.Core
         public override void Die()
         {
             base.Die();
-            // Chuyển sang trạng thái chết trong state machine
-            if (enemyController != null && enemyController.enemyStateMachine != null)
-            {
-                enemyController.enemyStateMachine.ChangeState(enemyController.enemyStateMachine.deadState);
-            }
+
         }
 
     }
